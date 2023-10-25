@@ -2,6 +2,7 @@
 
 https://sldlgen2.blob.core.windows.net/data/NYCTripSmall.parquet
 https://www.tablab.app/view/parquet?datatable-source=local-ddf6dc40-24eb-4bb0-a322-2c0c5c01c4b4
+https://www.tablab.app/
 
 **/
 

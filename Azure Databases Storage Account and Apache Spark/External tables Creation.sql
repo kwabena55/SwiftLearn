@@ -25,7 +25,7 @@ EXEC sp_configure 'polybase enabled', 1
  RECONFIGURE
 
 create EXTERNAL DATA SOURCE [Datasource5]
-WITH ( LOCATION = N'https://sldlgen2.blob.core.windows.net/data',
+WITH ( LOCATION = N'https://sldlgen2.blob.core.windows.net/data',    ---https://sldlgen2.dfs.core.windows.net/<container>
 CREDENTIAL=[SLCred555])
 
 ----########STEP 04 CREATE eXTERNAL fILE fORMAT ######
@@ -36,8 +36,8 @@ FORMAT_TYPE=PARQUET
 GO
 
 --- ####### STEP 05 CREATE EXT. TABLE ####
-create EXTERNAL TABLE tbl_TaxiRidee(
- [DateID] int,
+drop[ EXTERNAL TABLE tbl_TaxiRidee(
+     [DateID] int,
 	 [MedallionID] int,
 	 [HackneyLicenseID] int,
 	 [PickupTimeID] int,
@@ -62,12 +62,13 @@ create EXTERNAL TABLE tbl_TaxiRidee(
 	 [TotalAmount] numeric(19,4)
 )
 WITH (
-LOCATION='/NYCTripSmall.parquet',                          --'/*/*/*.parquet',
+LOCATION='/NYCTripSmall.parquet',                          --'/*/*/*.parquet',   https://sldlgen2.blob.core.windows.net/data/NYCTripSmall.parquet
 DATA_SOURCE=Datasource5,
 FILE_FORMAT=FileFormat
 );
 
 select  * from [dbo].tbl_TaxiRidee
+where TripDurationSeconds >=487
 
 
 
@@ -168,7 +169,11 @@ CREATE TABLE tbl_TaxiRide_RP_NON(
 	 CLUSTERED COLUMNSTORE INDEX
 	 ,DISTRIBUTION=REPLICATE)
 
+	 ------_##############################
+	 with cte as ( select * from <table >)
 
+
+	 ---------------------##########################
 
 --- ##CTAS -- CREATE TABLE AS -----
 CREATE TABLE tbride_CTAS_RB
@@ -247,3 +252,6 @@ GROUP BY DATEID
 DBCC PDW_SHOWSPACEUSED('tbride_CTAS_RB')
 DBCC PDW_SHOWSPACEUSED('tbride_CTAS_hash')
 DBCC PDW_SHOWSPACEUSED('tbride_CTAS_RP')
+
+
+drop table [dbo].[tbl_TaxiRide_Hash]
